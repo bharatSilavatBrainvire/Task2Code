@@ -48,7 +48,7 @@
                                                         <color key="backgroundColor" systemColor="systemBrownColor"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="Transform"/>
+                                                        <buttonConfiguration key="configuration" style="plain" title="Translate"/>
                                                         <connections>
                                                             <action selector="aplyFiler:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oqe-xf-4ow"/>
                                                         </connections>

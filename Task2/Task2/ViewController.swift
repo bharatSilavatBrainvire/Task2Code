@@ -63,18 +63,14 @@ class ViewController: UIViewController {
         switch currentSender {
         case .Rotate:
             let radians = currentRotation * CGFloat.pi / 180
-            let center = CGPoint(x: baseImage.size.width / 2, y: baseImage.size.height / 2)
-            cumulativeTransform = CGAffineTransform(translationX: center.x, y: center.y)
-                .rotated(by: radians)
-                .translatedBy(x: -center.x, y: -center.y)
+            self.testingImageView.transform = self.testingImageView.transform.rotated(by: radians)
             
         case .Scale:
             self.testingImageView.transform = self.testingImageView.transform.scaledBy(x: currentScaleX, y: currentScaleY)
             return
             
-        case .Transform:
-            let translation = CGAffineTransform(translationX: currentValueOfX, y: currentValueOfY)
-            self.testingImageView.transform = self.testingImageView.transform.concatenating(translation)
+        case .Translate:
+            self.testingImageView.transform = self.testingImageView.transform.translatedBy(x: currentValueOfX, y: currentValueOfY)
             return
         case .RESET:
             cumulativeTransform = .identity
@@ -99,7 +95,7 @@ class ViewController: UIViewController {
             guard let inputCIImage = CIImage(image: baseImage) else { return }
             
             let transformedImage = inputCIImage.transformed(by: transformToApply)
-            let outputExtent = inputCIImage.extent.union(transformedImage.extent)
+            let outputExtent = transformedImage.extent.integral
             
             if let cgImage = self.context.createCGImage(transformedImage, from: outputExtent) {
                 let outputImage = UIImage(cgImage: cgImage)
@@ -183,6 +179,6 @@ extension ViewController: UITextFieldDelegate {
 enum operationType: String {
     case Rotate = "Rotate"
     case Scale = "Scale"
-    case Transform = "Transform"
+    case Translate = "Translate"
     case RESET = "RESET"
 }
