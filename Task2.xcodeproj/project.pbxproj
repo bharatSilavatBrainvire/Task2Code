@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		A77D64622DD7193100BF2DB6 /* Task2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A77D64B22DD7680A00BF2DB6 /* Task2.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Task2.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -54,6 +55,13 @@
 			isa = PBXGroup;
 			children = (
 				A77D64622DD7193100BF2DB6 /* Task2.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A77D64B32DD7680A00BF2DB6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,6 +118,12 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A77D64632DD7193100BF2DB6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = A77D64B32DD7680A00BF2DB6 /* Products */;
+					ProjectRef = A77D64B22DD7680A00BF2DB6 /* Task2.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				A77D64612DD7193100BF2DB6 /* Task2 */,
