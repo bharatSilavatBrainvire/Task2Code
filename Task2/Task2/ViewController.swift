@@ -21,9 +21,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var rotateTextField: UITextField!
     @IBOutlet weak var rotateButton: UIButton!
     
-    
-    private var originalImage: UIImage?
-    private var cumulativeTransform = CGAffineTransform.identity
     private var currentValueOfX: CGFloat = 0 {
         didSet { print("Transform X updated: \(currentValueOfX)") }
     }
@@ -55,25 +52,23 @@ class ViewController: UIViewController {
             return
         }
         
-        guard let baseImage = testingImageView.image else {
-            print("Original image missing.")
-            return
-        }
-        
         switch currentSender {
         case .Rotate:
             let radians = currentRotation * CGFloat.pi / 180
-            self.testingImageView.transform = self.testingImageView.transform.rotated(by: radians)
-            
+            currentRotation += radians
+            self.testingImageView.transform = CGAffineTransform(rotationAngle: currentRotation)
+            return
         case .Scale:
+            self.testingImageView.contentMode = .scaleAspectFit
+            self.testingImageView.center = self.view.center
             self.testingImageView.transform = self.testingImageView.transform.scaledBy(x: currentScaleX, y: currentScaleY)
             return
-            
+
         case .Translate:
-            self.testingImageView.transform = self.testingImageView.transform.translatedBy(x: currentValueOfX, y: currentValueOfY)
-            return
+                let translationTransform = CGAffineTransform(translationX: currentValueOfX, y: currentValueOfY)
+                self.testingImageView.transform = self.testingImageView.transform.concatenating(translationTransform)
+                return
         case .RESET:
-            cumulativeTransform = .identity
             currentScaleX = 1
             currentScaleY = 1
             currentValueOfX = 0
@@ -85,36 +80,20 @@ class ViewController: UIViewController {
             scaleYTextField.text = ""
             rotateTextField.text = ""
             self.testingImageView.transform = .identity
-            self.testingImageView.image = originalImage
             return
-        }
-        
-        let transformToApply = cumulativeTransform
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            guard let inputCIImage = CIImage(image: baseImage) else { return }
-            
-            let transformedImage = inputCIImage.transformed(by: transformToApply)
-            let outputExtent = transformedImage.extent.integral
-            
-            if let cgImage = self.context.createCGImage(transformedImage, from: outputExtent) {
-                let outputImage = UIImage(cgImage: cgImage)
-                DispatchQueue.main.async {
-                    self.testingImageView.image = outputImage
-                }
-            } else {
-                print("Failed to create CGImage")
-            }
         }
     }
     
     private func setupUI() {
-        originalImage = testingImageView.image
+        self.testingImageView.backgroundColor = .red
+        self.testingImageView.contentMode = .scaleAspectFit
         transformXTextField.delegate = self
         transformYTextField.delegate = self
         scaleXTextField.delegate = self
         scaleYTextField.delegate = self
         rotateTextField.delegate = self
+        
+        debugPrint("Center of ImageView -> \(self.testingImageView.center)")
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -144,7 +123,6 @@ extension ViewController: UITextFieldDelegate {
             
         case rotateTextField:
             currentRotation = CGFloat(value)
-            
         default:
             break
         }
