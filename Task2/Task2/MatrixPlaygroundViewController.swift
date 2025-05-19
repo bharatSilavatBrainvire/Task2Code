@@ -16,6 +16,10 @@ class MatrixPlaygroundViewController: UIViewController {
     @IBOutlet weak var txTextField: UITextField!
     @IBOutlet weak var tyTextField: UITextField!
     @IBOutlet weak var transformableView: UIView!
+    @IBOutlet weak var perspective1: UITextField!
+    @IBOutlet weak var perspective2: UITextField!
+    @IBOutlet weak var isAffineTransform: UITextField!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,24 +46,24 @@ class MatrixPlaygroundViewController: UIViewController {
     }
     
     func updateTransformableView() {
-//        guard let aValue = CGFloat(aTextField.text ?? "1"),
-//              let bValue = CGFloat(bTextField.text ?? "0"),
-//              let cValue = CGFloat(cTextField.text ?? "0"),
-//              let dValue = CGFloat(dTextField.text ?? "1"),
-//              let txValue = CGFloat(txTextField.text ?? "0"),
-//              let tyValue = CGFloat(tyTextField.text ?? "0") else {
-//            print("Invalid input in text fields")
-//            return
-//        }
-//        
-//        let transform = CGAffineTransform(
-//            a: aValue,
-//            b: bValue,
-//            c: cValue,
-//            d: dValue,
-//            tx: txValue,
-//            ty: tyValue
-//        )
-//        transformableView.transform = transform
+        guard let aValue = Double(aTextField.text ?? "1"),
+              let bValue = Double(bTextField.text ?? "0"),
+              let cValue = Double(cTextField.text ?? "0"),
+              let dValue = Double(dTextField.text ?? "1"),
+              let txValue = Double(txTextField.text ?? "0"),
+              let tyValue = Double(tyTextField.text ?? "0") else {
+            print("Invalid input in text fields")
+            return
+        }
+        
+        let transform = CGAffineTransform(
+            a: CGFloat(aValue),
+            b: CGFloat(bValue),
+            c: CGFloat(cValue),
+            d: CGFloat(dValue),
+            tx: CGFloat(txValue),
+            ty: CGFloat(tyValue)
+        )
+        transformableView.transform = transform
     }
 }
